@@ -1,17 +1,22 @@
+// CourseCard.jsx
 import styled from "styled-components";
+
 import Chart from "./icons/chart.jsx";
 import Computer from "./icons/computer.jsx";
 import Calendar from "./icons/calendar.jsx";
 
 const Container = styled.div`
+  width: 296px;
+  height: 407px;
+  padding: 28px 24px 20px 24px;
+  position: relative;
+
   background-color: white;
   border: 1px solid #f0f1f3;
   border-radius: 8px;
-  width: 296px;
-  height: 407px;
   box-sizing: border-box;
-  padding: 28px 24px 20px;
-  position: relative;
+  box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.02);
+
   display: flex;
   flex-direction: column;
 `;
@@ -29,19 +34,22 @@ const Title = styled.h5`
   font-size: 18px;
   line-height: 26px;
   color: #151618;
+
   margin-bottom: 16px;
 `;
 
 const Description = styled.p`
-  color: #5e5f61;
+  font-weight: normal;
   font-size: 14px;
   line-height: 20px;
+  color: #5e5f61;
 `;
 
 const DividerLine = styled.div`
   width: 296px;
   height: 1px;
   background-color: #ececec;
+
   position: absolute;
   left: 0;
   bottom: 64px;
@@ -65,14 +73,16 @@ const OriginalCost = styled.p`
   line-height: 20px;
   text-decoration-line: line-through;
   color: #a8a9ab;
+
   margin-left: 8px;
 `;
 
-const DiscountPercentile = styled.p`
+const DiscountPercent = styled.p`
   font-weight: bold;
   font-size: 16px;
   line-height: 23px;
   color: #f94669;
+
   margin-left: auto;
 `;
 
@@ -81,6 +91,7 @@ const CostFree = styled.div`
   font-size: 16px;
   line-height: 23px;
   color: #34ab53;
+
   margin-top: 44px;
 `;
 
@@ -118,17 +129,18 @@ const LanguagesWrapper = styled.div`
   margin-top: 24px;
 `;
 
-function getColorByLang(lang) {
+function getColorByLanguage(lang) {
   if (lang === "파이썬") return "#477DB1";
-  if (lang === "HTML/CSS") return "#DE561D";
-  if (lang === "자바스크립트") return "#F3CB39";
+  else if (lang === "HTML/CSS") return "#DE561D";
+  else if (lang === "자바스크립트") return "#F3CB39";
 }
 
 const Language = styled.p`
   font-weight: bold;
   font-size: 12px;
   line-height: 12px;
-  color: ${(props) => getColorByLang(props.lang)};
+  color: ${(props) => getColorByLanguage(props.language)};
+
   position: relative;
   padding: 4px 6px;
 
@@ -143,7 +155,7 @@ const Language = styled.p`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: ${(props) => getColorByLang(props.lang)};
+    background-color: ${(props) => getColorByLanguage(props.language)};
     opacity: 0.2;
     border-radius: 2px;
   }
@@ -153,14 +165,17 @@ CourseCard.defaultProps = {
   tags: ["태그1", "태그2"],
   title: "샘플 타이틀",
   description: "프로그래밍이 처음이신가요? 파이썬으로 쉽고 재밌게 시작해봐요.",
-  isFree: false,
-  currentCost: 42000,
-  originalCost: 57000,
-  discountPercentile: 35,
-  level: "중급",
-  classFormat: "온라인",
-  duration: "무제한",
-  imgUrl: "rabbit.png",
+  isFree: true,
+  cost: {
+    currentCost: 42000,
+    originalCost: 57000,
+    discountPercent: 35,
+  },
+  courseDetails: {
+    level: "중급",
+    classFormat: "온라인",
+    duration: "무제한",
+  },
   languages: ["파이썬", "HTML/CSS", "자바스크립트"],
 };
 
@@ -170,13 +185,8 @@ export default function CourseCard({
   title,
   description,
   isFree,
-  currentCost,
-  originalCost,
-  discountPercentile,
-  level,
-  classFormat,
-  duration,
-  imgUrl,
+  cost,
+  courseDetails,
   languages,
 }) {
   return (
@@ -184,38 +194,41 @@ export default function CourseCard({
       <Tags>{tags.join("﹒")}</Tags>
       <Title>{title}</Title>
       <Description>{description}</Description>
+
       <TextsWrapper>
         <TextWrapper>
           <Chart />
-          <Text>난이도 : {level}</Text>
+          <Text>난이도: {courseDetails.level}</Text>
         </TextWrapper>
         <TextWrapper>
           <Computer />
-          <Text>수업 : {classFormat}</Text>
+          <Text>수업: {courseDetails.classFormat}</Text>
         </TextWrapper>
         <TextWrapper>
           <Calendar />
-          <Text>기간 : {duration}</Text>
+          <Text>기간: {courseDetails.duration}</Text>
         </TextWrapper>
       </TextsWrapper>
-      <Image src={imgUrl} />
+      <Image src={"rabbit.png"} />
+
       <LanguagesWrapper>
         {languages.map((lang, idx) => {
           return (
-            <Language key={`${lang}-${idx}-${title}`} lang={lang}>
+            <Language key={`${lang}-${idx}-${title}`} language={lang}>
               {lang}
             </Language>
           );
         })}
       </LanguagesWrapper>
+
       <DividerLine />
       {isFree ? (
         <CostFree>무료</CostFree>
       ) : (
         <CostWrapper>
-          <CurrentCost>{currentCost.toLocaleString()}원</CurrentCost>
-          <OriginalCost>{originalCost.toLocaleString()}원</OriginalCost>
-          <DiscountPercentile>{discountPercentile}%</DiscountPercentile>
+          <CurrentCost>{cost.currentCost.toLocaleString()}원</CurrentCost>
+          <OriginalCost>{cost.originalCost.toLocaleString()}원</OriginalCost>
+          <DiscountPercent>{cost.discountPercent}%</DiscountPercent>
         </CostWrapper>
       )}
     </Container>
