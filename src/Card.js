@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   width: 296px;
@@ -14,6 +14,24 @@ export const Container = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  /* Can override default CSS with props */
+  ${(props) =>
+    props.large &&
+    css`
+      width: 398px;
+      height: 409px;
+      padding-top: 32px;
+    `}
+`;
+
+export const TrackCardIcon = styled.img`
+  width: 28px;
+  height: 28px;
+  padding: 10px;
+  background-color: #524fa0;
+  border-radius: 18px;
+  margin-bottom: 24px;
 `;
 
 export const Tags = styled.p`
@@ -26,32 +44,32 @@ export const Tags = styled.p`
 
 export const Title = styled.h5`
   font-weight: bold;
-  font-size: 18px;
-  line-height: 26px;
+  font-size: ${(props) => (props.large ? 20 : 18)}px;
+  line-height: ${(props) => (props.large ? 29 : 26)}px;
   color: #151618;
 
-  margin-bottom: 16px;
+  margin-bottom: ${(props) => (props.large ? 15 : 16)}px;
 `;
 
 export const Description = styled.p`
   font-weight: normal;
   font-size: 14px;
-  line-height: 20px;
+  line-height: ${(props) => (props.large ? 22 : 20)}px;
   color: #5e5f61;
 `;
 
 export const DividerLine = styled.div`
-  width: 296px;
   height: 1px;
   background-color: #ececec;
 
   position: absolute;
   left: 0;
+  right: 0;
   bottom: 64px;
 `;
 
 export const CostWrapper = styled.div`
-  margin-top: 44px;
+  margin-top: ${(props) => (props.large ? 53 : 44)}px;
   display: flex;
   align-items: flex-end;
 `;
@@ -72,6 +90,12 @@ export const OriginalCost = styled.p`
   margin-left: 8px;
 `;
 
+export const Installment = styled.p`
+  font-size: 14px;
+  line-height: 20px;
+  margin-left: 4px;
+`;
+
 export const DiscountPercent = styled.p`
   font-weight: bold;
   font-size: 16px;
@@ -87,7 +111,7 @@ export const CostFree = styled.div`
   line-height: 23px;
   color: #34ab53;
 
-  margin-top: 44px;
+  margin-top: ${(props) => (props.large ? 53 : 44)}px;
 `;
 
 export const TextsWrapper = styled.div`
@@ -99,13 +123,13 @@ export const TextWrapper = styled.div`
   align-items: center;
 
   + div {
-    margin-top: 8px;
+    margin-top: ${(props) => (props.large ? 10 : 8)}px;
   }
 `;
 
 export const Text = styled.p`
   font-weight: 500;
-  font-size: 12px;
+  font-size: ${(props) => (props.large ? 14 : 12)}px;
   line-height: 22px;
   color: #7d7e80;
   margin-left: 8px;
@@ -155,3 +179,44 @@ export const Language = styled.p`
     border-radius: 2px;
   }
 `;
+
+const OuterCorner = styled.div`
+  //external corner
+  width: 80px;
+  height: 80px;
+  box-shadow: inset 10px -10px 20px rgba(95, 95, 95, 0.1);
+  border-radius: 0px 8px 0px 32px;
+
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  > div {
+    //internal corner
+    transition: all 200ms ease-in-out 0ms;
+
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #f4f4f4;
+    box-shadow: inset 10px -10px 20px rgba(95, 95, 95, 0.07);
+    border-radius: 0px 8px 0px 32px;
+  }
+
+  :hover > div {
+    background-color: #524fa0;
+    width: 52px;
+    height: 52px;
+  }
+`;
+
+// Create Corner component for icon
+export function Corner() {
+  return (
+    <OuterCorner>
+      <div />
+    </OuterCorner>
+  );
+}

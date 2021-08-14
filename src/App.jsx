@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import CourseCard from "./CourseCard.jsx";
+import TrackCard from "./TrackCard.jsx";
 
 const Container = styled.div`
   display: flex;
@@ -10,9 +11,15 @@ const Container = styled.div`
 
 export default function App() {
   return (
-    <Container>
-      <CourseCard />
-      <CourseCard isFree={false} />
-    </Container>
+    <>
+      <Container>
+        <TrackCard />
+      </Container>
+
+      <Container>
+        <CourseCard />
+        <CourseCard isFree={false} />
+      </Container>
+    </>
   );
 }
